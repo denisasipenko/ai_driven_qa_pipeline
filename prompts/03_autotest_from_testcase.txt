@@ -11,7 +11,7 @@ Tech Stack:
 Requirements for the generated code:
 1.  **File Structure**: The output should be a single Python file containing one test function.
 2.  **Imports**: Include necessary imports (`pytest`, `webdriver_manager`, `webdriver`, `LoginPage`). The `LoginPage` class definition will be provided.
-3.  **Fixture**: Use a `pytest` fixture to set up and tear down the WebDriver. The fixture should initialize Chrome using `ChromeDriverManager` and yield the driver.
+3.  **Fixture**: A `pytest` fixture named `driver` will be provided by `conftest.py` that sets up and tears down the WebDriver. The generated test function should accept this `driver` fixture as an argument.
 4.  **Test Function**:
     *   The test function name should be `test_` followed by a descriptive name based on the test case title and ID. Sanitize the title to be a valid Python identifier.
     *   It must accept the `driver` fixture as an argument.
@@ -39,23 +39,8 @@ Here is an example test case JSON and its corresponding generated Python code:
 ```
 
 ```python
-import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 # from pages.login_page import LoginPage # LoginPage class definition will be provided
 import time # Import time for implicit waits or sleep if needed
-
-@pytest.fixture(scope="function")
-def driver():
-    # Use Service for ChromeDriverManager
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
-    driver.implicitly_wait(10) # Implicit wait for elements to appear
-    yield driver
-    driver.quit()
-
-# LoginPage class definition will be provided below
 
 def test_verify_valid_login_tc_001(driver):
     login_page = LoginPage(driver)
@@ -66,7 +51,7 @@ def test_verify_valid_login_tc_001(driver):
     assert login_page.is_on_products_page(), "User was not redirected to the products page after valid login."
     
     # Optional: Add a small delay to visually confirm action if running tests manually
-    # time.sleep(1) 
+    # time.sleep(1)
 ```
 
 Now, generate the pytest test function for the following test case JSON, using the provided Page Object Model:
