@@ -29,7 +29,8 @@ jobs:
     - name: Install Chrome
       run: |
         sudo apt-get update
-        sudo apt-get install -y chromium-browser chromium-chromedriver # Or google-chrome-stable
+        sudo apt-get install -y google-chrome-stable
+        # Note: ChromeDriver is managed by webdriver_manager in conftest.py
 
     - name: Install Allure Commandline Tool
       run: |
