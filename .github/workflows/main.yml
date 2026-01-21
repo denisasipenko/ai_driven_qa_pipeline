@@ -33,9 +33,9 @@ jobs:
 
     - name: Install Allure Commandline Tool
       run: |
-        sudo apt-add-repository ppa:qameta/allure -y
-        sudo apt-get update
-        sudo apt-get install allure -y
+        curl -o allure.tgz -L https://github.com/allure-framework/allure2/releases/download/2.36.0/allure-2.36.0.tgz
+        tar -xzf allure.tgz -C ${{ runner.temp }}
+        echo "${{ runner.temp }}/allure-2.36.0/bin" >> $GITHUB_PATH
 
     - name: Run AI QA Pipeline
       env:
