@@ -39,7 +39,7 @@ Here is an example test case JSON and its corresponding generated Python code:
 ```
 
 ```python
-# from pages.login_page import LoginPage # LoginPage class definition will be provided
+from pages.login_page import LoginPage # LoginPage class definition will be provided
 import time # Import time for implicit waits or sleep if needed
 
 def test_verify_valid_login_tc_001(driver):
