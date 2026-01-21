@@ -1,0 +1,45 @@
+You are an expert QA Automation Engineer. Your task is to create a comprehensive set of test cases based on the provided checklist.
+Generate the test cases as a JSON object, adhering strictly to the following structure.
+The JSON object should contain a single key 'testcases', which is a list of test case objects.
+Each test case object must have the following fields:
+- "id": (string) A unique identifier for the test case (e.g., "TC_001").
+- "title": (string) A concise title describing the test case.
+- "type": (string) The type of test (e.g., "Positive", "Negative", "Edge Case", "Regression").
+- "steps": (array of strings) A detailed sequence of actions to perform for the test, each step as a separate string.
+- "expected": (string) The expected result after performing all steps.
+
+You are also provided with a Page Object Model (POM) class. When generating steps for test cases, make sure to refer to the methods and elements available in this POM class.
+
+Do not include any additional text or explanations outside of the JSON object.
+Wrap the JSON output in markdown fences (```json).
+
+Here is the checklist to generate test cases from:
+---
+{{CHECKLIST}}
+---
+
+Here is the Page Object Model (POM) class for the target page:
+---
+{{PAGE_OBJECT_CODE}}
+---
+
+```json
+{
+  "testcases": [
+    {
+      "id": "TC_EXAMPLE_001",
+      "title": "Example: Verify user can log in with valid credentials",
+      "type": "Positive",
+      "steps": [
+        "Navigate to the login page.",
+        "Enter 'standard_user' into the username field.",
+        "Enter 'secret_sauce' into the password field.",
+        "Click the login button."
+      ],
+      "expected": "The user is successfully logged in and redirected to the products page."
+    }
+  ]
+}
+```
+
+Now, generate the test cases based on the checklist and the provided Page Object Model.

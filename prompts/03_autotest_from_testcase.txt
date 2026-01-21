@@ -1,0 +1,78 @@
+You are an expert Python QA Automation Engineer. Your task is to generate a pytest test function for a web application login page.
+You will be provided with a JSON object representing a single test case.
+Adhere strictly to the following requirements:
+
+Tech Stack:
+- Python 3.x
+- pytest testing framework
+- Selenium WebDriver (using `webdriver-manager` for Chrome setup)
+- Page Object Model (POM) using the `LoginPage` class from `pages.login_page`.
+
+Requirements for the generated code:
+1.  **File Structure**: The output should be a single Python file containing one test function.
+2.  **Imports**: Include necessary imports (`pytest`, `webdriver_manager`, `webdriver`, `LoginPage`). The `LoginPage` class definition will be provided.
+3.  **Fixture**: Use a `pytest` fixture to set up and tear down the WebDriver. The fixture should initialize Chrome using `ChromeDriverManager` and yield the driver.
+4.  **Test Function**:
+    *   The test function name should be `test_` followed by a descriptive name based on the test case title and ID. Sanitize the title to be a valid Python identifier.
+    *   It must accept the `driver` fixture as an argument.
+    *   It must create an instance of the provided `LoginPage`.
+    *   It must implement the test logic using the `LoginPage` methods (e.g., `login_page.login()`, `login_page.get_error_message()`).
+    *   Use `pytest.fail()` for unhandled conditions or `pytest.raises()` for expected exceptions if applicable.
+    *   Use `assert` statements for expected results.
+5.  **Output Format**: The output should *only* be the Python code, enclosed in markdown fences (```python). Do not include any additional text or explanations.
+
+Here is an example test case JSON and its corresponding generated Python code:
+
+```json
+{
+  "id": "TC_001",
+  "title": "Verify valid login",
+  "type": "Positive",
+  "steps": [
+    "Navigate to the login page.",
+    "Enter 'standard_user' into the username field.",
+    "Enter 'secret_sauce' into the password field.",
+    "Click the login button."
+  ],
+  "expected": "The user is successfully logged in and redirected to the products page."
+}
+```
+
+```python
+import pytest
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+# from pages.login_page import LoginPage # LoginPage class definition will be provided
+import time # Import time for implicit waits or sleep if needed
+
+@pytest.fixture(scope="function")
+def driver():
+    # Use Service for ChromeDriverManager
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service)
+    driver.implicitly_wait(10) # Implicit wait for elements to appear
+    yield driver
+    driver.quit()
+
+# LoginPage class definition will be provided below
+
+def test_verify_valid_login_tc_001(driver):
+    login_page = LoginPage(driver)
+    login_page.open()
+    login_page.login("standard_user", "secret_sauce")
+    
+    # Assert that the user is on the products page
+    assert login_page.is_on_products_page(), "User was not redirected to the products page after valid login."
+    
+    # Optional: Add a small delay to visually confirm action if running tests manually
+    # time.sleep(1) 
+```
+
+Now, generate the pytest test function for the following test case JSON, using the provided Page Object Model:
+
+---
+{{PAGE_OBJECT_CODE}}
+---
+
+{{TEST_CASE_JSON}}

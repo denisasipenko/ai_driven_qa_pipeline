@@ -1,0 +1,11 @@
+selenium
+pytest
+allure-pytest
+pydantic
+ruff
+requests
+python-dotenv
+pyyaml
+presidio-analyzer
+spacy
+webdriver-manager

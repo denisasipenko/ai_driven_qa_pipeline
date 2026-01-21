@@ -1,0 +1,92 @@
+You are an expert Python QA Automation Engineer. Your task is to analyze the provided HTML content of a web page and generate a Python Page Object Model (POM) class for it.
+
+Adhere strictly to the following requirements:
+
+Tech Stack:
+- Python 3.x
+- Selenium WebDriver
+- Page Object Model (POM) design pattern
+
+Requirements for the generated code:
+1.  **Class Name**: The class name should be descriptive based on the page's likely purpose (e.g., `LoginPage`, `ProductsPage`).
+2.  **Imports**: Include necessary imports (`By` from `selenium.webdriver.common.by`, `WebDriver` from `selenium.webdriver.remote.webdriver`, `WebDriverWait`, `expected_conditions`).
+3.  **Locators**:
+    *   Identify all significant interactive elements (input fields, buttons, links, important text elements like error messages) on the page.
+    *   Define locators for these elements using `(By.STRATEGY, "locator_value")`. Prefer `By.ID`, then `By.CSS_SELECTOR`, then `By.XPATH` as a last resort.
+    *   Locators should be class-level constants (e.g., `USERNAME_FIELD = (By.ID, "user-name")`).
+4.  **Constructor**: The `__init__` method must accept a `driver: WebDriver` argument and store it. It should also define the `url` for the page.
+5.  **Methods**:
+    *   Create methods for common user interactions (e.g., `open()`, `enter_username(username: str)`, `enter_password(password: str)`, `click_login_button()`).
+    *   Methods should be descriptive and encapsulate interaction logic.
+    *   Include methods to verify page state (e.g., `is_on_products_page()`, `get_error_message()`).
+    *   Include waits (`WebDriverWait`) when necessary, especially after navigation or interactions that might trigger AJAX updates.
+6.  **Output Format**: The output should *only* be the Python code for the Page Object class, enclosed in markdown fences (```python). Do not include any additional text or explanations.
+
+Here is an example HTML content and its corresponding generated Python code:
+
+```html
+<html>
+<head><title>Swag Labs</title></head>
+<body>
+    <div class="login_container">
+        <div class="login_logo">Swag Labs</div>
+        <form>
+            <input class="input_error form_input" placeholder="Username" type="text" data-test="username" id="user-name" name="user-name">
+            <input class="input_error form_input" placeholder="Password" type="password" data-test="password" id="password" name="password">
+            <input class="submit-button btn_action" type="submit" data-test="login-button" id="login-button" name="login-button" value="Login">
+        </form>
+        <h3 data-test="error" style="display: block;">Epic sadface: Username and password do not match any user in this service</h3>
+    </div>
+</body>
+</html>
+```
+
+```python
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+class LoginPage:
+    """Page object for the Swag Labs login page."""
+
+    # Locators
+    USERNAME_FIELD = (By.ID, "user-name")
+    PASSWORD_FIELD = (By.ID, "password")
+    LOGIN_BUTTON = (By.ID, "login-button")
+    ERROR_MESSAGE = (By.CSS_SELECTOR, "[data-test='error']")
+    
+    def __init__(self, driver: WebDriver):
+        self.driver = driver
+        self.url = "https://www.saucedemo.com/"
+
+    def open(self):
+        """Opens the login page."""
+        self.driver.get(self.url)
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.USERNAME_FIELD))
+
+    def enter_username(self, username: str):
+        """Enters text into the username field."""
+        self.driver.find_element(*self.USERNAME_FIELD).send_keys(username)
+
+    def enter_password(self, password: str):
+        """Enters text into the password field."""
+        self.driver.find_element(*self.PASSWORD_FIELD).send_keys(password)
+
+    def click_login_button(self):
+        """Clicks the login button."""
+        self.driver.find_element(*self.LOGIN_BUTTON).click()
+
+    def get_error_message(self) -> str:
+        """Returns the text of the error message."""
+        return self.driver.find_element(*self.ERROR_MESSAGE).text
+
+    def is_on_products_page(self) -> bool:
+        """Checks if the current page is the products page after login.
+        Note: This method assumes successful login redirects to '/inventory.html'.
+        """
+        return "/inventory.html" in self.driver.current_url
+```
+
+Now, generate the Page Object Model (POM) class for the following HTML content:
+{{PAGE_HTML}}

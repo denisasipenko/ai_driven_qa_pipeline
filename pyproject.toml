@@ -1,0 +1,25 @@
+[tool.ruff]
+# Аналог правил checkstyle. Выбираем базовые наборы правил.
+# E = pycodestyle (ошибки)
+# W = pycodestyle (предупреждения)
+# F = Pyflakes (проверка на отсутствие импортов, неиспользуемые переменные и т.д.)
+# I = isort (сортировка импортов)
+select = ["E", "W", "F", "I"]
+
+# Исключаем директории, которые не нужно проверять
+exclude = [
+    ".venv",
+    "venv",
+    ".idea",
+    "build",
+    "dist",
+]
+
+# Устанавливаем максимальную длину строки
+line-length = 88
+
+[tool.ruff.format]
+# Настройки для автоматического форматирования кода, аналог spotless
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

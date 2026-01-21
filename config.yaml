@@ -1,0 +1,26 @@
+# Configuration for the PII control components
+
+pii_rules:
+  - name: EMAIL
+    pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    mask_pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    strategy: 'redact' # Can be 'redact' or 'replace'
+    mask_replacement: '[EMAIL]' # Used only if strategy is 'replace'
+
+  - name: PHONE
+    pattern: '\+?\d[\d\s\-()]{7,}'
+    mask_pattern: '\+?\d[\d\s\-()]{7,}'
+    strategy: 'redact'
+    mask_replacement: '[PHONE]'
+
+  - name: PASSWORD
+    pattern: '(?i)(password\s*[:=]\s*\S+)'
+    mask_pattern: '(?i)(password\s*[:=]\s*)(\S+)'
+    strategy: 'replace'
+    mask_replacement: '\1[SECRET]'
+
+  - name: URL
+    pattern: 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|[a-zA-Z0-9]+\.[^\s]{2,}'
+    mask_pattern: 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|[a-zA-Z0-9]+\.[^\s]{2,}'
+    strategy: 'redact'
+    mask_replacement: '[URL]'

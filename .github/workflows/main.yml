@@ -1,0 +1,65 @@
+name: AI QA Pipeline CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13' # Use your desired Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser chromium-chromedriver # Or google-chrome-stable
+
+    - name: Install Allure Commandline Tool
+      run: |
+        sudo apt-add-repository ppa:qameta/allure -y
+        sudo apt-get update
+        sudo apt-get install allure -y
+
+    - name: Run AI QA Pipeline
+      env:
+        MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+      run: |
+        # Ensure 'generated' directory exists before running pipeline
+        mkdir -p generated
+        # Download spaCy model if PresidioPiiScanner is used
+        python -m spacy download en_core_web_lg
+        # Run the main pipeline script
+        python -m src.pipeline_main
+
+    - name: Upload Allure Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-report
+        path: generated/allure-report
+        if-no-files-found: ignore # Don't fail if report not generated
+
+    - name: Upload Generated Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: generated-artifacts
+        path: |
+          generated/
+          tests/
+        if-no-files-found: ignore
