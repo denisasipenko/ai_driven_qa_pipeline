@@ -14,13 +14,13 @@ pii_rules:
     mask_replacement: '[PHONE]'
 
   - name: PASSWORD
-    pattern: '(?i)(password\s*[:=]\s*\S+)'
-    mask_pattern: '(?i)(password\s*[:=]\s*)(\S+)'
+    pattern: '(?i)(password\s*[:=]\s*)(?!str\))(\S+)'
+    mask_pattern: '(?i)(password\s*[:=]\s*)(?!str\))(\S+)'
     strategy: 'replace'
     mask_replacement: '\1[SECRET]'
 
   - name: URL
-    pattern: 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|[a-zA-Z0-9]+\.[^\s]{2,}'
-    mask_pattern: 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|[a-zA-Z0-9]+\.[^\s]{2,}'
+    pattern: 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}(?:\/[^\s]*)?|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}(?:\/[^\s]*)?'
+    mask_pattern: 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}(?:\/[^\s]*)?|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}(?:\/[^\s]*)?'
     strategy: 'redact'
     mask_replacement: '[URL]'
