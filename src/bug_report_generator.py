@@ -13,14 +13,13 @@ class BugReportGenerator:
     OUTPUT_DIR = "generated"
 
     @staticmethod
-    def generate_bug_report(failure_facts: str, suffix: str = "") -> Path:
+    def generate_bug_report(failure_facts: str) -> Path:
         """
         Generates a structured bug report based on provided failure facts.
 
         Args:
             failure_facts: A string containing details about the test failure
                            (steps, input data, expected/actual results, errors, stack traces).
-            suffix: An optional string suffix to append to the bug report filename (e.g., "_1", "_2").
 
         Returns:
             Path to the generated bug report JSON file.
@@ -43,8 +42,7 @@ class BugReportGenerator:
             # Ensure output directory exists
             Path(BugReportGenerator.OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
             
-            output_file_name = f"bug_report{suffix}.json"
-            output_file_path = Path(BugReportGenerator.OUTPUT_DIR) / output_file_name
+            output_file_path = Path(BugReportGenerator.OUTPUT_DIR) / "bug_report.json"
             FilesUtil.write(str(output_file_path), bug_report_data.model_dump_json(indent=2))
             
             print(f"-> Structured bug report saved to '{output_file_path}'")
